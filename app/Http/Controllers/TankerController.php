@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Product;
+use App\Tanker;
 
-class ProductController extends Controller
+class TankerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,21 +13,16 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-
     public function home()
     {
+        //
         return view('vueApp');
     }
+
     public function index()
     {
         //
-        return Product::orderBy('id', 'DESC')->get();
-    }
-
-    public function fetch()
-    {
-        //
-        return Product::orderBy('id', 'DESC')->get();
+        return Tanker::orderBy('id', 'DESC')->get();
     }
 
     /**
@@ -48,11 +43,10 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-
-        $create = Product::create($request->all());
-        // return response()->json(['status' => 'success','msg'=>'Product created successfully']);
+        //
+        $create = Tanker::create($request->all());
         if ($create) {
-            return Product::orderBy('id', 'DESC')->first();
+            return Tanker::orderBy('id', 'DESC')->first();
         }
     }
 
@@ -88,15 +82,20 @@ class ProductController extends Controller
     public function update(Request $request)
     {
         //
-        $product = Product::find($request->id);
-        if($product->count()){
-            $product->name = $request->name;
-            $product->save();
-            return response()->json(['statur'=>'success','msg'=>'updated']);
+        $tanker = Tanker::find($request->id);
+        if($tanker->count()){
+            $tanker->number = $request->number;
+            $tanker->owner = $request->owner;
+            $tanker->account_name = $request->account_name;
+            $tanker->account_number = $request->account_number;
+            $tanker->bank_name = $request->bank_name;
+            $tanker->branch_name = $request->branch_name;
+            $tanker->ifsc_code = $request->ifsc_code;
+            $tanker->save();
+            return response()->json(['status'=>'success','msg'=>'updated']);
         } else {
-            return response()->json(['statur'=>'error','msg'=>'error in updating product']);
+            return response()->json(['status'=>'error','msg'=>'error in updating tanker']);
         }
-        // return $request->all();
     }
 
     /**
@@ -108,12 +107,12 @@ class ProductController extends Controller
     public function destroy(Request $request)
     {
         //
-        $product = Product::find($request->id);
-        if($product->count()){
-          $product->delete();
-          return response()->json(['statur'=>'success','msg'=>'product deleted successfully']);
+        $tanker = Tanker::find($request->id);
+        if($tanker->count()){
+          $tanker->delete();
+          return response()->json(['status'=>'success','msg'=>'tanker deleted successfully']);
         } else {
-          return response()->json(['statur'=>'error','msg'=>'error in deleting product']);
+          return response()->json(['status'=>'error','msg'=>'error in deleting tanker']);
         }
     }
 }

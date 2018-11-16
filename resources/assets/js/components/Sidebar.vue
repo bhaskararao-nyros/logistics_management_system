@@ -61,7 +61,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .navbar_blk .bg-info {
   background-color: #457981 !important;
 }
@@ -73,7 +73,7 @@ export default {
 .sidebar_ul li {
   background-color: #457981;
   padding: 16px;
-  border-top: 1px solid #f2f2f2;
+  border-top: 1px solid #679299;;
   margin-left: -40px;
   color: #fff;
   cursor: pointer;
@@ -83,13 +83,13 @@ export default {
   padding-left: 20%;
 }
 .nested_ul li:last-child {
-  border-bottom: 1px solid #f2f2f2;
+  border-bottom: 1px solid #679299;;
 }
 .nested_ul {
   list-style: none;
 }
 #data_management_li {
-  border-bottom: 1px solid #f2f2f2;
+  border-bottom: 1px solid #679299;;
 }
 #app_name {
   background-color: #2e4245;

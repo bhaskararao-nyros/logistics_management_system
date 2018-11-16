@@ -10,11 +10,9 @@ window.VueAxios=require('vue-axios').default;
 
 window.Axios=require('axios').default;
 
-let AppLayout= require('./components/App.vue');
+let AppLayout= require('./components/MainApp.vue');
 
 window.BootstrapVue=require('bootstrap-vue').default;
-
-// window.Notifications=require('vue-notification').default;
 
 import store from './store';
 
@@ -40,6 +38,12 @@ const Products=Vue.component('Products', require('./components/data_management/P
 // // add post template
 const Companies =Vue.component('Companies', require('./components/data_management/Companies.vue'));
 
+const Tankers =Vue.component('Tankers', require('./components/data_management/Tankers.vue'));
+
+const Users =Vue.component('Users', require('./components/data_management/Users.vue'));
+
+const Fright =Vue.component('Fright', require('./components/data_management/Fright.vue'));
+
 // // edite post template
 // const Editpost =Vue.component('Editpost', require('./components/Editpost.vue'));
 
@@ -55,11 +59,11 @@ Vue.use(VueRouter,VueAxios, axios, Vuex, BootstrapVue);
 Vue.use(Notifications);
 
 const routes = [
-  {
-    name: 'Dashboard',
-    path: '/',
-    component: Dashboard
-  },
+  // {
+  //   name: 'Dashboard',
+  //   path: '/',
+  //   component: Dashboard
+  // },
   {
     name: 'Companies',
     path: '/companies',
@@ -70,16 +74,21 @@ const routes = [
     path: '/products',
     component: Products
   },
-  // {
-  //   name: 'Deletepost',
-  //   path: '/post-delete',
-  //   component: Deletepost
-  // },
-  // {
-  //   name: 'Viewpost',
-  //   path: '/view/:id',
-  //   component: Viewpost
-  // }
+  {
+    name: 'Tankers',
+    path: '/tankers',
+    component: Tankers
+  },
+  {
+    name: 'Users',
+    path: '/users',
+    component: Users
+  },
+  {
+    name: 'Fright',
+    path: '/',
+    component: Fright
+  }
 ];
 
 const router = new VueRouter({ mode: 'history', routes: routes});

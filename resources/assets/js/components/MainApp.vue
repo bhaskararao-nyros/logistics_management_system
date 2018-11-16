@@ -8,8 +8,8 @@
 
 <script>
 export default {
- mounted() {
- console.log('Component mounted.')
- }
+ 	mounted () {
+      this.$store.dispatch('GET_PRODUCTS')
+ 	}
  }
 </script>

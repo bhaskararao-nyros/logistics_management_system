@@ -3,31 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Product;
+use App\Fright;
 
-class ProductController extends Controller
+class FrightController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-
-
     public function home()
     {
+        //
         return view('vueApp');
     }
+
     public function index()
     {
         //
-        return Product::orderBy('id', 'DESC')->get();
-    }
-
-    public function fetch()
-    {
-        //
-        return Product::orderBy('id', 'DESC')->get();
+        return Fright::orderBy('id', 'DESC')->get();
     }
 
     /**
@@ -48,11 +42,10 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-
-        $create = Product::create($request->all());
-        // return response()->json(['status' => 'success','msg'=>'Product created successfully']);
+        //
+        $create = Fright::create($request->all());
         if ($create) {
-            return Product::orderBy('id', 'DESC')->first();
+            return Fright::orderBy('id', 'DESC')->first();
         }
     }
 
@@ -88,15 +81,19 @@ class ProductController extends Controller
     public function update(Request $request)
     {
         //
-        $product = Product::find($request->id);
-        if($product->count()){
-            $product->name = $request->name;
-            $product->save();
-            return response()->json(['statur'=>'success','msg'=>'updated']);
+        $fright = Fright::find($request->id);
+        if($fright->count()){
+            $fright->product = $request->product;
+            $fright->quantity = $request->quantity;
+            $fright->source = $request->source;
+            $fright->destination = $request->destination;
+            $fright->fright = $request->fright;
+            $fright->distance = $request->distance;
+            $fright->save();
+            return response()->json(['status'=>'success','msg'=>'updated']);
         } else {
-            return response()->json(['statur'=>'error','msg'=>'error in updating product']);
+            return response()->json(['status'=>'error','msg'=>'error in updating fright']);
         }
-        // return $request->all();
     }
 
     /**
@@ -108,12 +105,12 @@ class ProductController extends Controller
     public function destroy(Request $request)
     {
         //
-        $product = Product::find($request->id);
-        if($product->count()){
-          $product->delete();
-          return response()->json(['statur'=>'success','msg'=>'product deleted successfully']);
+        $fright = Fright::find($request->id);
+        if($fright->count()){
+          $fright->delete();
+          return response()->json(['status'=>'success','msg'=>'fright deleted successfully']);
         } else {
-          return response()->json(['statur'=>'error','msg'=>'error in deleting product']);
+          return response()->json(['status'=>'error','msg'=>'error in deleting fright']);
         }
     }
 }

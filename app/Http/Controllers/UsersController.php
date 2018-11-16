@@ -3,16 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Company;
+use App\Users;
 
-class CompanyController extends Controller
+class UsersController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-
     public function home()
     {
         //
@@ -23,7 +22,7 @@ class CompanyController extends Controller
     public function index()
     {
         //
-        return Company::orderBy('id', 'DESC')->get();
+        return Users::orderBy('id', 'DESC')->get();
     }
 
     /**
@@ -44,10 +43,10 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        // return $request->all();
-        $create = Company::create($request->all());
+        //
+        $create = Users::create($request->all());
         if ($create) {
-            return Company::orderBy('id', 'DESC')->first();
+            return Users::orderBy('id', 'DESC')->first();
         }
     }
 
@@ -83,19 +82,15 @@ class CompanyController extends Controller
     public function update(Request $request)
     {
         //
-        $company = Company::find($request->id);
-        if($company->count()){
-            $company->name = $request->name;
-            $company->address = $request->address;
-            $company->source = $request->source;
-            $company->destination = $request->destination;
-            $company->quantity = $request->quantity;
-            $company->rate = $request->rate;
-            $company->short_code = $request->short_code;
-            $company->save();
-            return response()->json(['statur'=>'success','msg'=>'updated']);
+        $user = Users::find($request->id);
+        if($user->count()){
+            $user->name = $request->name;
+            $user->address = $request->address;
+            $user->role_as = $request->role_as;
+            $user->save();
+            return response()->json(['status'=>'success','msg'=>'updated']);
         } else {
-            return response()->json(['statur'=>'error','msg'=>'error in updating company']);
+            return response()->json(['status'=>'error','msg'=>'error in updating user']);
         }
     }
 
@@ -105,15 +100,34 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
         //
-        $company = Company::find($request->id);
-        if($company->count()){
-          $company->delete();
-          return response()->json(['statur'=>'success','msg'=>'company deleted successfully']);
+    }
+
+    public function activation(Request $request)
+    {
+        //
+        $user = Users::find($request->id);
+        if($user->count()){
+            $user->status = $request->status;
+            $user->save();
+            return response()->json(['status'=>'success','msg'=>'user activated']);
         } else {
-          return response()->json(['statur'=>'error','msg'=>'error in deleting company']);
+            return response()->json(['status'=>'error','msg'=>'error in user activation']);
+        }
+    }
+
+    public function deactivation(Request $request)
+    {
+        //
+        $user = Users::find($request->id);
+        if($user->count()){
+            $user->status = $request->status;
+            $user->save();
+            return response()->json(['status'=>'success','msg'=>'user deactivated']);
+        } else {
+            return response()->json(['status'=>'error','msg'=>'error in user deactivation']);
         }
     }
 }

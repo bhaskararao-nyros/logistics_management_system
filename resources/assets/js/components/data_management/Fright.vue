@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard">
     <!-- NOTIFICATIONS COMPONENT -->
-    <notifications group="company_notifications" />
+    <notifications group="fright_notifications" />
     <b-row class="dashboard_row">
       <b-col cols="3">
         <!-- SIDEBAR COMPONENT -->
@@ -22,30 +22,29 @@
               <b-col>
                 <b-row>
                   <b-col cols="3">
-                    <label>Company Name</label>  
+                    <label>Product</label>  
                   </b-col>
                   <b-col>
-                    <b-form-input 
-                      v-model="company.name"
-                      type="text"
-                      placeholder="Enter company name"
-                      class="form_input">
-                    </b-form-input>
+                    <select v-model="fright.product" class="form-control">
+                      <option value="select">Select</option>
+                      <option v-for="product in products">{{ product.name }}</option>
+                    </select>
                   </b-col>
                 </b-row>
               </b-col>
               <b-col>
                 <b-row>
                   <b-col cols="3">
-                    <label>Address</label>  
+                    <label>Quantity</label>  
                   </b-col>
                   <b-col>
-                    <b-form-input 
-                      v-model="company.address"
-                      type="text"
-                      placeholder="Enter address"
-                      class="form_input">
-                    </b-form-input>
+                    <select v-model="fright.quantity" class="form-control">
+                      <option value="select">Select</option>
+                      <option value="10">10 Tonne</option>
+                      <option value="20">20 Tonne</option>
+                      <option value="30">30 Tonne</option>
+                      <option value="40">40 Tonne</option>
+                    </select>
                   </b-col>
                 </b-row>
               </b-col>
@@ -58,7 +57,7 @@
                   </b-col>
                   <b-col>
                     <b-form-input 
-                      v-model="company.source"
+                      v-model="fright.source"
                       type="text"
                       placeholder="Enter source"
                       class="form_input">
@@ -73,7 +72,7 @@
                   </b-col>
                   <b-col>
                     <b-form-input 
-                      v-model="company.destination"
+                      v-model="fright.destination"
                       type="text"
                       placeholder="Enter destination"
                       class="form_input">
@@ -86,13 +85,13 @@
               <b-col>
                 <b-row>
                   <b-col cols="3">
-                    <label>Quantity</label>  
+                    <label>Fright</label>  
                   </b-col>
                   <b-col>
                     <b-form-input 
-                      v-model="company.quantity"
+                      v-model="fright.fright"
                       type="text"
-                      placeholder="Enter quantity"
+                      placeholder="Enter fright"
                       class="form_input">
                     </b-form-input>
                   </b-col>
@@ -101,37 +100,17 @@
               <b-col>
                 <b-row>
                   <b-col cols="3">
-                    <label>Rate</label>  
+                    <label>Distance</label>  
                   </b-col>
                   <b-col>
                     <b-form-input 
-                      v-model="company.rate"
+                      v-model="fright.distance"
                       type="text"
-                      placeholder="Enter product name"
+                      placeholder="Enter distance"
                       class="form_input">
                     </b-form-input>
                   </b-col>
                 </b-row>
-              </b-col>
-            </b-row>
-            <b-row class="form_row_margin">
-              <b-col>
-                <b-row>
-                  <b-col cols="3">
-                    <label>Short Code</label>  
-                  </b-col>
-                  <b-col>
-                    <b-form-input 
-                      v-model="company.short_code"
-                      type="text"
-                      placeholder="Enter short code"
-                      class="form_input">
-                    </b-form-input>
-                  </b-col>
-                </b-row>
-              </b-col>
-              <b-col>
-                
               </b-col>
             </b-row>
             <b-button type="submit" class="add_product_btn" size="sm">Add</b-button>
@@ -160,14 +139,16 @@
             <!-- TABLE -->
             <b-table show-empty 
               responsive
-              :items="companies"
+              :items="frights"
               :fields="fields"
               :current-page="currentPage"
               :per-page="perPage"
               :filter="filter"
               @filtered="onFiltered"
-              class="table_class">
+              class="fright_table">
               <template slot="name" slot-scope="row">{{ row.value }}</template>
+              <template slot="quantity" slot-scope="row">{{ row.value }} tonnes</template>
+              <template slot="distance" slot-scope="row">{{ row.value }} km</template>
               <template slot="actions" slot-scope="row">
                 <b-button size="sm" variant="info" @click.stop="edit(row.item, row.index, $event.target)" class="mr-1">
                   Edit
@@ -175,13 +156,6 @@
                 <b-button size="sm" variant="danger" @click.stop="openDeleteModal(row.item, row.index, $event.target)" class="mr-1">
                   Delete
                 </b-button>
-              </template>
-              <template slot="row-details" slot-scope="row">
-                <b-card>
-                  <ul>
-                    <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value}}</li>
-                  </ul>
-                </b-card>
               </template>
             </b-table>
             <!-- TABLE PAGINATION -->
@@ -201,30 +175,29 @@
                   <b-col>
                     <b-row>
                       <b-col cols="3">
-                        <label>Company Name</label>  
+                        <label>Product</label>  
                       </b-col>
                       <b-col>
-                        <b-form-input 
-                          v-model="editModalInfo.name"
-                          type="text"
-                          placeholder="Enter company name"
-                          class="form_input">
-                        </b-form-input>
+                        <select v-model="editModalInfo.product" class="form-control">
+                          <option value="select">Select</option>
+                          <option v-for="product in products" :value="product.name">{{ product.name }}</option>
+                        </select>
                       </b-col>
                     </b-row>
                   </b-col>
                   <b-col>
                     <b-row>
                       <b-col cols="3">
-                        <label>Address</label>  
+                        <label>Owner</label>  
                       </b-col>
                       <b-col>
-                        <b-form-input 
-                          v-model="editModalInfo.address"
-                          type="text"
-                          placeholder="Enter address"
-                          class="form_input">
-                        </b-form-input>
+                        <select v-model="editModalInfo.quantity" class="form-control">
+                          <option value="select">Select</option>
+                          <option value="10">10 Tonne</option>
+                          <option value="20">20 Tonne</option>
+                          <option value="30">30 Tonne</option>
+                          <option value="40">40 Tonne</option>
+                        </select>
                       </b-col>
                     </b-row>
                   </b-col>
@@ -265,13 +238,13 @@
                   <b-col>
                     <b-row>
                       <b-col cols="3">
-                        <label>Quantity</label>  
+                        <label>Fright</label>  
                       </b-col>
                       <b-col>
                         <b-form-input 
-                          v-model="editModalInfo.quantity"
+                          v-model="editModalInfo.fright"
                           type="text"
-                          placeholder="Enter quantity"
+                          placeholder="Enter fright"
                           class="form_input">
                         </b-form-input>
                       </b-col>
@@ -280,37 +253,17 @@
                   <b-col>
                     <b-row>
                       <b-col cols="3">
-                        <label>Rate</label>  
+                        <label>Distance</label>  
                       </b-col>
                       <b-col>
                         <b-form-input 
-                          v-model="editModalInfo.rate"
+                          v-model="editModalInfo.distance"
                           type="text"
-                          placeholder="Enter product name"
+                          placeholder="Enter distance"
                           class="form_input">
                         </b-form-input>
                       </b-col>
                     </b-row>
-                  </b-col>
-                </b-row>
-                <b-row class="form_row_margin">
-                  <b-col>
-                    <b-row>
-                      <b-col cols="3">
-                        <label>Short Code</label>  
-                      </b-col>
-                      <b-col>
-                        <b-form-input 
-                          v-model="editModalInfo.short_code"
-                          type="text"
-                          placeholder="Enter short code"
-                          class="form_input">
-                        </b-form-input>
-                      </b-col>
-                    </b-row>
-                  </b-col>
-                  <b-col>
-                    <!-- empty col -->
                   </b-col>
                 </b-row>
               </b-form>
@@ -323,7 +276,7 @@
 
             <!-- DELETE MODAL -->
             <b-modal header-bg-variant="danger" id="deleteModal" title="Delete">
-              <p>Are you sure want to delete this company ?</p>
+              <p>Are you sure want to delete this fright ?</p>
               <div slot="modal-footer" class="w-100">
                 <b-btn size="md" class="modal_btns" variant="secondary" @click="deleteItem">
                    Yes
@@ -345,59 +298,57 @@
 import Sidebar from './../Sidebar'; 
 import Navbar from './../Navbar';
 
-let companies = []
+let frights = []
 
 export default {
-  name: 'Companies',
+  name: 'Fright',
   data () {
     return {
       breadcrumb_items: [
         { text: 'Dashboard', href: '/' }, 
-        { text: 'Companies', active: true }
+        { text: 'Fright', active: true }
       ],
       fields: [
-        { key: 'name', label: 'Name', sortable: true },
-        { key: 'address', label: 'Address', sortable: true },
+        { key: 'product', label: 'Product', sortable: true },
+        { key: 'quantity', label: 'Quantity', sortable: true },
         { key: 'source', label: 'Source', sortable: true },
         { key: 'destination', label: 'Destination', sortable: true },
-        { key: 'quantity', label: 'Quantity', sortable: true },
-        { key: 'rate', label: 'Rate', sortable: true },
-        { key: 'short_code', label: 'Short code', sortable: true },
+        { key: 'fright', label: 'Fright', sortable: true },
+        { key: 'distance', label: 'Distance', sortable: true },
         { key: 'actions', label: 'Actions' }
       ],
       currentPage: 1,
       perPage: 10,
-      totalRows: companies.length,
+      totalRows: frights.length,
       pageOptions: [ 5, 10, 15 ],
       filter: null,
-      editModalInfo: { name: '', id: 0 },
+      editModalInfo: { product: 'select', quantity: 'select', id: 0 },
       err_msg: '',
       add_err: false,
       edit_err: false,
       delete_id: 0,
-      company: { 
-        name: '', 
-        address: '', 
+      fright: { 
+        product: 'select', 
+        quantity: 'select', 
         source: '', 
         destination: '', 
-        short_code: '', 
-        quantity: '', 
-        rate: '', 
-        short_code: ''}
+        fright: '', 
+        distance: ''
+      }
     }
   },
   mounted () {
-    this.getCompanies()
+    this.getFright()
   },
   methods: {
-    getCompanies () {
-      this.$store.dispatch('GET_COMPANIES')
+    getFright () {
+      this.$store.dispatch('GET_FRIGHTS')
     },
 
     // CALLING NOTIFICATIONS AFTER EACH OPERATION
     callNotification (type,msg) {
       this.$notify({
-        group: 'company_notifications',
+        group: 'fright_notifications',
         type: 'warn',
         title: type,
         text: msg
@@ -421,84 +372,71 @@ export default {
 
     // CRUD METHODS
     add () {
-      if (this.company.name === '') {
+      if (this.fright.product === 'select') {
         this.add_err = true
-        this.err_msg = 'Company name required'
-      } else if (this.company.name.length < 3) {
+        this.err_msg = 'Please select product'
+      } else if (this.fright.quantity === 'select') {
         this.add_err = true
-        this.err_msg = 'Company name must be atleast 3 characters'
-      } else if (this.company.address === '') {
-        this.add_err = true
-        this.err_msg = "Address required"
-      } else if (this.company.source === '') {
+        this.err_msg = "Please select quantity"
+      } else if (this.fright.source === '') {
         this.add_err = true
         this.err_msg = "Source required"
-      } else if (this.company.destination === '') {
+      } else if (this.fright.destination === '') {
         this.add_err = true
         this.err_msg = "Destination required"
-      } else if (this.company.quantity === '') {
+      } else if (this.fright.fright === '') {
         this.add_err = true
-        this.err_msg = "Quantity required"
-      } else if (this.company.rate === '') {
+        this.err_msg = "Fright required"
+      } else if (this.fright.distance === '') {
         this.add_err = true
-        this.err_msg = "Rate required"
-      } else if (this.company.short_code === '') {
-        this.add_err = true
-        this.err_msg = "Short code required"
+        this.err_msg = "Distance required"
       } else {
         this.add_err = false
         this.err_msg = ''
       }
 
       if (!this.add_err) {
-        this.$store.dispatch('ADD_COMPANY', this.company)
-        this.callNotification('ADD COMPANY','Company added successfully')
-        // this.company.name = ''
-        // this.company.address = ''
-        // this.company.source = ''
-        // this.company.destination = ''
-        // this.company.quantity = ''
-        // this.company.rate = ''
-        // this.company.short_code = ''
+        this.$store.dispatch('ADD_FRIGHT', this.fright)
+        this.callNotification('ADD fright','fright added successfully')
+        // this.fright.name = ''
+        // this.fright.address = ''
+        // this.fright.source = ''
+        // this.fright.destination = ''
+        // this.fright.quantity = ''
+        // this.fright.rate = ''
+        // this.fright.short_code = ''
       }
     },
     edit (item, index, button) {
       this.editModalInfo.id = item.id
-      this.editModalInfo.name = item.name
-      this.editModalInfo.address = item.address
+      this.editModalInfo.product = item.product
+      this.editModalInfo.quantity = item.quantity
       this.editModalInfo.source = item.source
       this.editModalInfo.destination = item.destination
-      this.editModalInfo.quantity = item.quantity
-      this.editModalInfo.rate = item.rate
-      this.editModalInfo.short_code = item.short_code
+      this.editModalInfo.fright = item.fright
+      this.editModalInfo.distance = item.distance
       this.$root.$emit('bv::show::modal', 'editModal', button)
     },
     update () {
 
-      if (this.editModalInfo.name === '') {
+      if (this.editModalInfo.product === 'select') {
         this.edit_err = true
-        this.err_msg = 'Company name required'
-      } else if (this.editModalInfo.name.length < 3) {
+        this.err_msg = 'Please select product'
+      } else if (this.editModalInfo.quantity === 'select') {
         this.edit_err = true
-        this.err_msg = 'Company name must be atleast 3 characters'
-      } else if (this.editModalInfo.address === '') {
-        this.edit_err = true
-        this.err_msg = "Address required"
+        this.err_msg = "Please select quantity"
       } else if (this.editModalInfo.source === '') {
         this.edit_err = true
         this.err_msg = "Source required"
       } else if (this.editModalInfo.destination === '') {
         this.edit_err = true
         this.err_msg = "Destination required"
-      } else if (this.editModalInfo.quantity === '') {
+      } else if (this.editModalInfo.fright === '') {
         this.edit_err = true
-        this.err_msg = "Quantity required"
-      } else if (this.editModalInfo.rate === '') {
+        this.err_msg = "Fright required"
+      } else if (this.editModalInfo.distance === '') {
         this.edit_err = true
-        this.err_msg = "Rate required"
-      } else if (this.editModalInfo.short_code === '') {
-        this.edit_err = true
-        this.err_msg = "Short code required"
+        this.err_msg = "Distance required"
       } else {
         this.edit_err = false
         this.err_msg = ''
@@ -506,25 +444,28 @@ export default {
 
       if (!this.edit_err) {
         this.$root.$emit('bv::hide::modal', 'editModal')
-        this.$store.dispatch('UPDATE_COMPANY',this.editModalInfo)
-        this.getCompanies()
-        this.callNotification('UPDATE COMPANY','Company updated successfully')
+        this.$store.dispatch('UPDATE_FRIGHT',this.editModalInfo)
+        this.getFright()
+        this.callNotification('UPDATE FRIGHT','Fright updated successfully')
       }
     },
     deleteItem () {
       let data = { id: this.delete_id }
-      this.$store.dispatch('DELETE_COMPANY',data)
+      this.$store.dispatch('DELETE_FRIGHT',data)
       this.closeDeleteModal()
-      this.getCompanies()
-      this.callNotification('DELETE COMPANY','Company deleted successfully')
+      this.getFright()
+      this.callNotification('DELETE FRIGHT','Fright deleted successfully')
     },
   },
   computed: {
 
     // GETTING PRODUCTS FROM VUEX STORE
-    companies () {
-      companies = this.$store.getters.COMPANIES
-      return this.$store.getters.COMPANIES
+    frights () {
+      frights = this.$store.getters.FRIGHTS
+      return this.$store.getters.FRIGHTS
+    },
+    products () {
+      return this.$store.getters.PRODUCTS
     }
   },
   components: {
@@ -567,7 +508,10 @@ label {
   margin-top: 2px;
   margin-left: 1%;
 }
-.table_class th.sorting {
-  width: 112px !important;
+.fright_table th.sorting {
+  width: 14% !important;
+}
+.add_product_btn {
+  margin-top: 1%;
 }
 </style>

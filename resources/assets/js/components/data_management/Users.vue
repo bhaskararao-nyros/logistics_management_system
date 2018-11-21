@@ -3,11 +3,11 @@
     <!-- NOTIFICATIONS COMPONENT -->
     <notifications group="user_notifications" />
     <b-row class="dashboard_row">
-      <b-col cols="3">
+      <b-col cols="3" class="sidebar_column">
         <!-- SIDEBAR COMPONENT -->
         <Sidebar />
       </b-col>
-      <b-col cols="9">
+      <b-col cols="9" class="content_column">
         <!-- NAVBAR COMPONENT -->
         <Navbar />
         <!-- BREADCRUBM FOR EASY NAVIGATION -->
@@ -102,6 +102,7 @@
               :filter="filter"
               @filtered="onFiltered"
               class="users_table">
+              <template slot="serial_no" slot-scope="row">{{ row.index + 1 }}</template>
               <template slot="role_as" slot-scope="row">{{ row.value === 'operator' ? "Operator" : "Admin" }}</template>
               <template slot="status" slot-scope="row">
                 <p class="text-danger" v-if="row.value === 0">Deactive</p>
@@ -190,19 +191,6 @@
                 </b-btn>
               </div>
             </b-modal>
-
-            <!-- DELETE MODAL -->
-            <b-modal header-bg-variant="danger" id="deleteModal" title="Delete">
-              <p>Are you sure want to delete this user ?</p>
-              <div slot="modal-footer" class="w-100">
-                <b-btn size="md" class="modal_btns" variant="secondary" @click="deleteItem">
-                   Yes
-                </b-btn>
-                <b-btn size="md" class="modal_btns" variant="primary" @click="closeDeleteModal">
-                   No
-                </b-btn>
-              </div>
-            </b-modal>
           </b-container>
         </b-card>
       </b-col>
@@ -226,6 +214,7 @@ export default {
         { text: 'Users', active: true }
       ],
       fields: [
+        { key: 'serial_no', label: 'S.No', sortable: true },
         { key: 'name', label: 'User name', sortable: true },
         { key: 'address', label: 'Address', sortable: true },
         { key: 'role_as', label: 'Role as', sortable: true },
@@ -251,6 +240,7 @@ export default {
     }
   },
   mounted () {
+    document.title = "Users - LMS"
     this.getUsers()
   },
   methods: {
@@ -402,6 +392,6 @@ label {
   margin-left: 1%;
 }
 .users_table th.sorting {
-  width: 20% !important;
+  width: 16% !important;
 }
 </style>

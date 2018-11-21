@@ -10,6 +10,8 @@
 export default {
  	mounted () {
       this.$store.dispatch('GET_PRODUCTS')
+      this.$store.dispatch('GET_VENDORS')
+      this.$store.dispatch('GET_TANKERS')
  	}
  }
 </script>

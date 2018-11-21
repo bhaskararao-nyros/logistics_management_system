@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard">
     <!-- NOTIFICATIONS COMPONENT -->
-    <notifications group="company_notifications" />
+    <notifications group="vendor_notifications" />
     <b-row class="dashboard_row">
       <b-col cols="3" class="sidebar_column">
         <!-- SIDEBAR COMPONENT -->
@@ -22,13 +22,13 @@
               <b-col>
                 <b-row>
                   <b-col cols="3">
-                    <label>Company Name</label>  
+                    <label>Vendor Name</label>  
                   </b-col>
                   <b-col>
                     <b-form-input 
-                      v-model="company.name"
+                      v-model="vendor.name"
                       type="text"
-                      placeholder="Enter company name"
+                      placeholder="Enter vendor name"
                       class="form_input">
                     </b-form-input>
                   </b-col>
@@ -41,7 +41,7 @@
                   </b-col>
                   <b-col>
                     <b-form-input 
-                      v-model="company.address"
+                      v-model="vendor.address"
                       type="text"
                       placeholder="Enter address"
                       class="form_input">
@@ -54,13 +54,13 @@
               <b-col>
                 <b-row>
                   <b-col cols="3">
-                    <label>Short Code</label>  
+                    <label>Margin Loss</label>  
                   </b-col>
                   <b-col>
                     <b-form-input 
-                      v-model="company.short_code"
+                      v-model="vendor.margin_loss"
                       type="text"
-                      placeholder="Enter short code"
+                      placeholder="Enter margin loss"
                       class="form_input">
                     </b-form-input>
                   </b-col>
@@ -96,7 +96,7 @@
             <!-- TABLE -->
             <b-table show-empty 
               responsive
-              :items="companies"
+              :items="vendors"
               :fields="fields"
               :current-page="currentPage"
               :per-page="perPage"
@@ -134,13 +134,13 @@
                   <b-col>
                     <b-row>
                       <b-col cols="3">
-                        <label>Company Name</label>  
+                        <label>Vendor Name</label>  
                       </b-col>
                       <b-col>
                         <b-form-input 
                           v-model="editModalInfo.name"
                           type="text"
-                          placeholder="Enter company name"
+                          placeholder="Enter vendor name"
                           class="form_input">
                         </b-form-input>
                       </b-col>
@@ -166,11 +166,11 @@
                   <b-col>
                     <b-row>
                       <b-col cols="3">
-                        <label>Short Code</label>  
+                        <label>Margin Loss</label>  
                       </b-col>
                       <b-col>
                         <b-form-input 
-                          v-model="editModalInfo.short_code"
+                          v-model="editModalInfo.margin_loss"
                           type="text"
                           placeholder="Enter short code"
                           class="form_input">
@@ -192,7 +192,7 @@
 
             <!-- DELETE MODAL -->
             <b-modal header-bg-variant="danger" id="deleteModal" title="Delete">
-              <p>Are you sure want to delete this company ?</p>
+              <p>Are you sure want to delete this vendor ?</p>
               <div slot="modal-footer" class="w-100">
                 <b-btn size="md" class="modal_btns" variant="secondary" @click="deleteItem">
                    Yes
@@ -214,26 +214,26 @@
 import Sidebar from './../Sidebar'; 
 import Navbar from './../Navbar';
 
-let companies = []
+let vendors = []
 
 export default {
-  name: 'Companies',
+  name: 'Vendors',
   data () {
     return {
       breadcrumb_items: [
         { text: 'Dashboard', href: '/' }, 
-        { text: 'Companies', active: true }
+        { text: 'Vendors', active: true }
       ],
       fields: [
         { key: 'serial_no', label: 'S.No', sortable: true },
-        { key: 'name', label: 'Name', sortable: true },
+        { key: 'name', label: 'Vendor Name', sortable: true },
         { key: 'address', label: 'Address', sortable: true },
-        { key: 'short_code', label: 'Short code', sortable: true },
+        { key: 'margin_loss', label: 'Margin Loss', sortable: true },
         { key: 'actions', label: 'Actions' }
       ],
       currentPage: 1,
       perPage: 10,
-      totalRows: companies.length,
+      totalRows: vendors.length,
       pageOptions: [ 5, 10, 15 ],
       filter: null,
       editModalInfo: { name: '', id: 0 },
@@ -241,25 +241,25 @@ export default {
       add_err: false,
       edit_err: false,
       delete_id: 0,
-      company: { 
+      vendor: { 
         name: '', 
         address: '',
-        short_code: ''}
+        margin_loss: ''}
     }
   },
   mounted () {
-    document.title = "Companies - LMS"
-    this.getCompanies()
+    document.title = "Vendors - LMS"
+    this.getVendors()
   },
   methods: {
-    getCompanies () {
-      this.$store.dispatch('GET_COMPANIES')
+    getVendors () {
+      this.$store.dispatch('GET_VENDORS')
     },
 
     // CALLING NOTIFICATIONS AFTER EACH OPERATION
     callNotification (type,msg) {
       this.$notify({
-        group: 'company_notifications',
+        group: 'vendor_notifications',
         type: 'warn',
         title: type,
         text: msg
@@ -283,54 +283,56 @@ export default {
 
     // CRUD METHODS
     add () {
-      if (this.company.name === '') {
+      if (this.vendor.name === '') {
         this.add_err = true
-        this.err_msg = 'Company name required'
-      } else if (this.company.name.length < 3) {
+        this.err_msg = 'Vendor name required'
+      } else if (this.vendor.name.length < 3) {
         this.add_err = true
-        this.err_msg = 'Company name must be atleast 3 characters'
-      } else if (this.company.address === '') {
+        this.err_msg = 'Vendor name must be atleast 3 characters'
+      } else if (this.vendor.address === '') {
         this.add_err = true
         this.err_msg = "Address required"
-      } else if (this.company.short_code === '') {
+      } else if (this.vendor.margin_loss === '') {
         this.add_err = true
-        this.err_msg = "Short code required"
+        this.err_msg = "Margin Loss required"
       } else {
         this.add_err = false
         this.err_msg = ''
       }
 
       if (!this.add_err) {
-        this.$store.dispatch('ADD_COMPANY', this.company)
-        this.callNotification('ADD COMPANY','Company added successfully')
-        // this.company.name = ''
-        // this.company.address = ''
-        // this.company.source = ''
-        // this.company.destination = ''
-        // this.company.quantity = ''
-        // this.company.rate = ''
-        // this.company.short_code = ''
+        this.$store.dispatch('ADD_VENDOR', this.vendor)
+        this.getVendors()
+        this.callNotification('ADD VENDOR','Vendor added successfully')
+        // this.vendor.name = ''
+        // this.vendor.address = ''
+        // this.vendor.source = ''
+        // this.vendor.destination = ''
+        // this.vendor.quantity = ''
+        // this.vendor.rate = ''
+        // this.vendor.short_code = ''
       }
     },
     edit (item, index, button) {
       this.editModalInfo.id = item.id
       this.editModalInfo.name = item.name
       this.editModalInfo.address = item.address
-      this.editModalInfo.short_code = item.short_code
+      this.editModalInfo.margin_loss = item.margin_loss
       this.$root.$emit('bv::show::modal', 'editModal', button)
+
     },
     update () {
 
       if (this.editModalInfo.name === '') {
         this.edit_err = true
-        this.err_msg = 'Company name required'
+        this.err_msg = 'vendor name required'
       } else if (this.editModalInfo.name.length < 3) {
         this.edit_err = true
-        this.err_msg = 'Company name must be atleast 3 characters'
+        this.err_msg = 'vendor name must be atleast 3 characters'
       } else if (this.editModalInfo.address === '') {
         this.edit_err = true
         this.err_msg = "Address required"
-      } else if (this.editModalInfo.short_code === '') {
+      } else if (this.editModalInfo.margin_loss === '') {
         this.edit_err = true
         this.err_msg = "Short code required"
       } else {
@@ -340,25 +342,25 @@ export default {
 
       if (!this.edit_err) {
         this.$root.$emit('bv::hide::modal', 'editModal')
-        this.$store.dispatch('UPDATE_COMPANY',this.editModalInfo)
-        this.getCompanies()
-        this.callNotification('UPDATE COMPANY','Company updated successfully')
+        this.$store.dispatch('UPDATE_VENDOR',this.editModalInfo)
+        this.getVendors()
+        this.callNotification('UPDATE VENDOR','Vendor updated successfully')
       }
     },
     deleteItem () {
       let data = { id: this.delete_id }
-      this.$store.dispatch('DELETE_COMPANY',data)
+      this.$store.dispatch('DELETE_VENDOR',data)
       this.closeDeleteModal()
-      this.getCompanies()
-      this.callNotification('DELETE COMPANY','Company deleted successfully')
+      this.getVendors()
+      this.callNotification('DELETE VENDOR','Vendor deleted successfully')
     },
   },
   computed: {
 
     // GETTING PRODUCTS FROM VUEX STORE
-    companies () {
-      companies = this.$store.getters.COMPANIES
-      return this.$store.getters.COMPANIES
+    vendors () {
+      vendors = this.$store.getters.VENDORS
+      return this.$store.getters.VENDORS
     }
   },
   components: {

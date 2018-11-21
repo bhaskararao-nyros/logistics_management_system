@@ -17,7 +17,7 @@ window.BootstrapVue=require('bootstrap-vue').default;
 import store from './store';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCoffee, faCaretRight, faCaretDown, faPenSquare } from '@fortawesome/free-solid-svg-icons'
+import { faCoffee, faCaretRight, faCaretDown, faPenSquare, faTrash, faPlusCircle, faEye } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import Notifications from 'vue-notification'
@@ -25,7 +25,7 @@ import Notifications from 'vue-notification'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-library.add(faCoffee, faCaretRight, faCaretDown, faPenSquare)
+library.add(faCoffee, faCaretRight, faCaretDown, faPenSquare, faTrash, faPlusCircle, faEye)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
@@ -44,6 +44,10 @@ const Users =Vue.component('Users', require('./components/data_management/Users.
 
 const Fright =Vue.component('Fright', require('./components/data_management/Fright.vue'));
 
+const Vendor =Vue.component('Vendor', require('./components/data_management/Vendors.vue'));
+
+const LrEntry =Vue.component('LrEntry', require('./components/Lrentry.vue'));
+
 // // edite post template
 // const Editpost =Vue.component('Editpost', require('./components/Editpost.vue'));
 
@@ -59,35 +63,45 @@ Vue.use(VueRouter,VueAxios, axios, Vuex, BootstrapVue);
 Vue.use(Notifications);
 
 const routes = [
-  // {
-  //   name: 'Dashboard',
-  //   path: '/',
-  //   component: Dashboard
-  // },
+  {
+    name: 'Dashboard',
+    path: '/',
+    component: Dashboard
+  },
   {
     name: 'Companies',
-    path: '/companies',
+    path: '/company',
     component: Companies
   },
   {
     name: 'Products',
-    path: '/products',
+    path: '/product',
     component: Products
   },
   {
     name: 'Tankers',
-    path: '/tankers',
+    path: '/tanker',
     component: Tankers
   },
   {
     name: 'Users',
-    path: '/users',
+    path: '/user',
     component: Users
   },
   {
     name: 'Fright',
-    path: '/',
+    path: '/fright',
     component: Fright
+  },
+  {
+    name: 'Vendor',
+    path: '/vendor',
+    component: Vendor
+  },
+  {
+    name: 'LrEntry',
+    path: '/lr_entry',
+    component: LrEntry
   }
 ];
 

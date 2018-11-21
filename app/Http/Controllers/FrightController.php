@@ -10,7 +10,7 @@ class FrightController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response 
      */
     public function home()
     {
@@ -87,7 +87,7 @@ class FrightController extends Controller
             $fright->quantity = $request->quantity;
             $fright->source = $request->source;
             $fright->destination = $request->destination;
-            $fright->fright = $request->fright;
+            $fright->fright = $request->rate;
             $fright->distance = $request->distance;
             $fright->save();
             return response()->json(['status'=>'success','msg'=>'updated']);

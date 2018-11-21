@@ -3,11 +3,11 @@
     <!-- NOTIFICATIONS COMPONENT -->
     <notifications group="product_notifications" />
     <b-row class="dashboard_row">
-      <b-col cols="3">
+      <b-col cols="3" class="sidebar_column">
         <!-- SIDEBAR COMPONENT -->
         <Sidebar />
       </b-col>
-      <b-col cols="9">
+      <b-col cols="9" class="content_column">
         <!-- NAVBAR COMPONENT -->
         <Navbar />
         <!-- BREADCRUBM FOR EASY NAVIGATION -->
@@ -61,14 +61,11 @@
               :per-page="perPage"
               :filter="filter"
               @filtered="onFiltered">
+              <template slot="serial_no" slot-scope="row">{{ row.index + 1 }}</template>
               <template slot="name" slot-scope="row">{{ row.value }}</template>
               <template slot="actions" slot-scope="row">
-                <b-button size="sm" variant="info" @click.stop="editProduct(row.item, row.index, $event.target)" class="mr-1">
-                  Edit
-                </b-button>
-                <b-button size="sm" variant="danger" @click.stop="openDeleteProductModal(row.item, row.index, $event.target)" class="mr-1">
-                  Delete
-                </b-button>
+                <font-awesome-icon icon="pen-square" @click.stop="editProduct(row.item, row.index, $event.target)" class="fa_edit_icon" />
+                <font-awesome-icon icon="trash" @click.stop="openDeleteProductModal(row.item, row.index, $event.target)" class="fa_delete_icon" />
               </template>
               <template slot="row-details" slot-scope="row">
                 <b-card>
@@ -133,6 +130,7 @@ export default {
         { text: 'Products', active: true }
       ],
       fields: [
+        { key: 'serial_no', label: 'S.No', sortable: true },
         { key: 'name', label: 'Product Name', sortable: true },
         { key: 'actions', label: 'Actions' }
       ],
@@ -150,6 +148,7 @@ export default {
     }
   },
   mounted () {
+    document.title = "Products - LMS"
     this.getProducts()
   },
   methods: {

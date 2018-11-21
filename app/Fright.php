@@ -8,5 +8,5 @@ class Fright extends Model
 {
     //
     protected $table = 'fright';
-    protected $fillable = ['product', 'quantity', 'source', 'destination', 'fright', 'distance'];
+    protected $fillable = ['product', 'quantity', 'source', 'destination', 'rate', 'distance'];
 }

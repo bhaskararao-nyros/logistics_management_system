@@ -3,27 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Company;
+use App\Vendor;
 
-class CompanyController extends Controller
+class VendorController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-
-    public function home()
-    {
-        //
-        return view('vueApp');
-    }
-
-
     public function index()
     {
         //
-        return Company::orderBy('id', 'DESC')->get();
+        return Vendor::orderBy('id', 'DESC')->get();
     }
 
     /**
@@ -44,10 +36,10 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        // return $request->all();
-        $create = Company::create($request->all());
+        //
+        $create = Vendor::create($request->all());
         if ($create) {
-            return Company::orderBy('id', 'DESC')->first();
+            return Vendor::orderBy('id', 'DESC')->first();
         }
     }
 
@@ -83,15 +75,15 @@ class CompanyController extends Controller
     public function update(Request $request)
     {
         //
-        $company = Company::find($request->id);
-        if($company->count()){
-            $company->name = $request->name;
-            $company->address = $request->address;
-            $company->short_code = $request->short_code;
-            $company->save();
+        $vendor = Vendor::find($request->id);
+        if($vendor->count()){
+            $vendor->name = $request->name;
+            $vendor->address = $request->address;
+            $vendor->margin_loss = $request->margin_loss;
+            $vendor->save();
             return response()->json(['statur'=>'success','msg'=>'updated']);
         } else {
-            return response()->json(['statur'=>'error','msg'=>'error in updating company']);
+            return response()->json(['statur'=>'error','msg'=>'error in updating vendor']);
         }
     }
 
@@ -104,12 +96,12 @@ class CompanyController extends Controller
     public function destroy(Request $request)
     {
         //
-        $company = Company::find($request->id);
-        if($company->count()){
-          $company->delete();
-          return response()->json(['statur'=>'success','msg'=>'company deleted successfully']);
+        $vendor = Vendor::find($request->id);
+        if($vendor->count()){
+          $vendor->delete();
+          return response()->json(['statur'=>'success','msg'=>'vendor deleted successfully']);
         } else {
-          return response()->json(['statur'=>'error','msg'=>'error in deleting company']);
+          return response()->json(['statur'=>'error','msg'=>'error in deleting vendor']);
         }
     }
 }

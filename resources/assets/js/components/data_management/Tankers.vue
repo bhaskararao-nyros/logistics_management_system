@@ -3,11 +3,11 @@
     <!-- NOTIFICATIONS COMPONENT -->
     <notifications group="tanker_notifications" />
     <b-row class="dashboard_row">
-      <b-col cols="3">
+      <b-col cols="3" class="sidebar_column">
         <!-- SIDEBAR COMPONENT -->
         <Sidebar />
       </b-col>
-      <b-col cols="9">
+      <b-col cols="9" class="content_column">
         <!-- NAVBAR COMPONENT -->
         <Navbar />
         <!-- BREADCRUBM FOR EASY NAVIGATION -->
@@ -167,14 +167,11 @@
               :filter="filter"
               @filtered="onFiltered"
               class="tankers_table">
+              <template slot="serial_no" slot-scope="row">{{ row.index + 1 }}</template>
               <template slot="name" slot-scope="row">{{ row.value }}</template>
               <template slot="actions" slot-scope="row">
-                <b-button size="sm" variant="info" @click.stop="edit(row.item, row.index, $event.target)" class="mr-1">
-                  Edit
-                </b-button>
-                <b-button size="sm" variant="danger" @click.stop="openDeleteModal(row.item, row.index, $event.target)" class="mr-1">
-                  Delete
-                </b-button>
+                <font-awesome-icon icon="pen-square" @click.stop="edit(row.item, row.index, $event.target)" class="fa_edit_icon" />
+                <font-awesome-icon icon="trash" @click.stop="openDeleteModal(row.item, row.index, $event.target)" class="fa_delete_icon" />
               </template>
               <template slot="row-details" slot-scope="row">
                 <b-card>
@@ -356,6 +353,7 @@ export default {
         { text: 'Tankers', active: true }
       ],
       fields: [
+        { key: 'serial_no', label: 'S.No', sortable: true },
         { key: 'number', label: 'Tanker Number', sortable: true },
         { key: 'owner', label: 'Owner', sortable: true },
         { key: 'account_name', label: 'Account Name', sortable: true },
@@ -387,6 +385,7 @@ export default {
     }
   },
   mounted () {
+    document.title = "Tankers - LMS"
     this.getTankers()
   },
   methods: {
@@ -547,9 +546,6 @@ export default {
 .pagination_row {
   float: right;
 }
-/*.form_input {
-  width: 50%;
-}*/
 .modal_btns {
   float: right;
   margin-left: 1%;

@@ -3,11 +3,11 @@
     <!-- NOTIFICATIONS COMPONENT -->
     <notifications group="fright_notifications" />
     <b-row class="dashboard_row">
-      <b-col cols="3">
+      <b-col cols="3" class="sidebar_column">
         <!-- SIDEBAR COMPONENT -->
         <Sidebar />
       </b-col>
-      <b-col cols="9">
+      <b-col cols="9" class="content_column">
         <!-- NAVBAR COMPONENT -->
         <Navbar />
         <!-- BREADCRUBM FOR EASY NAVIGATION -->
@@ -53,6 +53,21 @@
               <b-col>
                 <b-row>
                   <b-col cols="3">
+                    <label>Rate</label>  
+                  </b-col>
+                  <b-col>
+                    <b-form-input 
+                      v-model="fright.rate"
+                      type="text"
+                      placeholder="Enter rate per quantity"
+                      class="form_input">
+                    </b-form-input>
+                  </b-col>
+                </b-row>
+              </b-col>
+              <b-col>
+                <b-row>
+                  <b-col cols="3">
                     <label>Source</label>  
                   </b-col>
                   <b-col>
@@ -65,6 +80,8 @@
                   </b-col>
                 </b-row>
               </b-col>
+            </b-row>
+            <b-row class="form_row_margin">
               <b-col>
                 <b-row>
                   <b-col cols="3">
@@ -75,23 +92,6 @@
                       v-model="fright.destination"
                       type="text"
                       placeholder="Enter destination"
-                      class="form_input">
-                    </b-form-input>
-                  </b-col>
-                </b-row>
-              </b-col>
-            </b-row>
-            <b-row class="form_row_margin">
-              <b-col>
-                <b-row>
-                  <b-col cols="3">
-                    <label>Fright</label>  
-                  </b-col>
-                  <b-col>
-                    <b-form-input 
-                      v-model="fright.fright"
-                      type="text"
-                      placeholder="Enter fright"
                       class="form_input">
                     </b-form-input>
                   </b-col>
@@ -146,16 +146,13 @@
               :filter="filter"
               @filtered="onFiltered"
               class="fright_table">
+              <template slot="serial_no" slot-scope="row">{{ row.index + 1 }}</template>
               <template slot="name" slot-scope="row">{{ row.value }}</template>
               <template slot="quantity" slot-scope="row">{{ row.value }} tonnes</template>
               <template slot="distance" slot-scope="row">{{ row.value }} km</template>
               <template slot="actions" slot-scope="row">
-                <b-button size="sm" variant="info" @click.stop="edit(row.item, row.index, $event.target)" class="mr-1">
-                  Edit
-                </b-button>
-                <b-button size="sm" variant="danger" @click.stop="openDeleteModal(row.item, row.index, $event.target)" class="mr-1">
-                  Delete
-                </b-button>
+                <font-awesome-icon icon="pen-square" @click.stop="edit(row.item, row.index, $event.target)" class="fa_edit_icon" />
+                <font-awesome-icon icon="trash" @click.stop="openDeleteModal(row.item, row.index, $event.target)" class="fa_delete_icon" />
               </template>
             </b-table>
             <!-- TABLE PAGINATION -->
@@ -242,7 +239,7 @@
                       </b-col>
                       <b-col>
                         <b-form-input 
-                          v-model="editModalInfo.fright"
+                          v-model="editModalInfo.rate"
                           type="text"
                           placeholder="Enter fright"
                           class="form_input">
@@ -309,11 +306,12 @@ export default {
         { text: 'Fright', active: true }
       ],
       fields: [
+        { key: 'serial_no', label: 'S.No', sortable: true },
         { key: 'product', label: 'Product', sortable: true },
         { key: 'quantity', label: 'Quantity', sortable: true },
+        { key: 'rate', label: 'Rate', sortable: true },
         { key: 'source', label: 'Source', sortable: true },
         { key: 'destination', label: 'Destination', sortable: true },
-        { key: 'fright', label: 'Fright', sortable: true },
         { key: 'distance', label: 'Distance', sortable: true },
         { key: 'actions', label: 'Actions' }
       ],
@@ -332,12 +330,13 @@ export default {
         quantity: 'select', 
         source: '', 
         destination: '', 
-        fright: '', 
+        rate: '', 
         distance: ''
       }
     }
   },
   mounted () {
+    document.title = "Fright - LMS"
     this.getFright()
   },
   methods: {
@@ -384,9 +383,9 @@ export default {
       } else if (this.fright.destination === '') {
         this.add_err = true
         this.err_msg = "Destination required"
-      } else if (this.fright.fright === '') {
+      } else if (this.fright.rate === '') {
         this.add_err = true
-        this.err_msg = "Fright required"
+        this.err_msg = "Rate required"
       } else if (this.fright.distance === '') {
         this.add_err = true
         this.err_msg = "Distance required"
@@ -413,7 +412,7 @@ export default {
       this.editModalInfo.quantity = item.quantity
       this.editModalInfo.source = item.source
       this.editModalInfo.destination = item.destination
-      this.editModalInfo.fright = item.fright
+      this.editModalInfo.rate = item.rate
       this.editModalInfo.distance = item.distance
       this.$root.$emit('bv::show::modal', 'editModal', button)
     },
@@ -431,9 +430,9 @@ export default {
       } else if (this.editModalInfo.destination === '') {
         this.edit_err = true
         this.err_msg = "Destination required"
-      } else if (this.editModalInfo.fright === '') {
+      } else if (this.editModalInfo.rate === '') {
         this.edit_err = true
-        this.err_msg = "Fright required"
+        this.err_msg = "Rate required"
       } else if (this.editModalInfo.distance === '') {
         this.edit_err = true
         this.err_msg = "Distance required"

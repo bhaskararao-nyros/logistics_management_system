@@ -3,27 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Company;
+use App\Lrentry;
 
-class CompanyController extends Controller
+class LrentryController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-
-    public function home()
-    {
-        //
-        return view('vueApp');
-    }
-
-
     public function index()
     {
         //
-        return Company::orderBy('id', 'DESC')->get();
+        return Lrentry::orderBy('id', 'DESC')->get();
     }
 
     /**
@@ -44,10 +36,10 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        // return $request->all();
-        $create = Company::create($request->all());
+        //
+        $create = Lrentry::create($request->all());
         if ($create) {
-            return Company::orderBy('id', 'DESC')->first();
+            return Lrentry::orderBy('id', 'DESC')->first();
         }
     }
 
@@ -80,19 +72,9 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         //
-        $company = Company::find($request->id);
-        if($company->count()){
-            $company->name = $request->name;
-            $company->address = $request->address;
-            $company->short_code = $request->short_code;
-            $company->save();
-            return response()->json(['statur'=>'success','msg'=>'updated']);
-        } else {
-            return response()->json(['statur'=>'error','msg'=>'error in updating company']);
-        }
     }
 
     /**
@@ -101,15 +83,30 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
         //
-        $company = Company::find($request->id);
-        if($company->count()){
-          $company->delete();
-          return response()->json(['statur'=>'success','msg'=>'company deleted successfully']);
+    }
+
+    public function getLastLr()
+    {
+        //
+        return Lrentry::orderBy('id', 'DESC')->first();
+    }
+
+    public function createReceipt(Request $request)
+    {
+        //
+        $receipt = Lrentry::find($request->id);
+        if($receipt->count()){
+            $receipt->shortage = $request->shortage;
+            $receipt->shortage_amount = $request->shortage_amount;
+            $receipt->balance_fright = $request->balance;
+            $receipt->receipt_status = 1;
+            $receipt->save();
+            return response()->json(['status'=>'success','msg'=>'updated']);
         } else {
-          return response()->json(['statur'=>'error','msg'=>'error in deleting company']);
+            return response()->json(['status'=>'error','msg'=>'error in updating receipt']);
         }
     }
 }

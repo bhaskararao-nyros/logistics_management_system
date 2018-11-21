@@ -31,7 +31,7 @@ Route::post('/delete_company', 'CompanyController@destroy');
 
 // TANKER ROUTES
 
-Route::get('/', 'TankerController@home');
+// Route::get('/', 'TankerController@home');
 Route::resource('/tankers', 'TankerController');
 Route::post('/add_tanker', 'TankerController@store');
 Route::post('/update_tanker', 'TankerController@update');
@@ -39,7 +39,7 @@ Route::post('/delete_tanker', 'TankerController@destroy');
 
 // USER ROUTES
 
-Route::get('/', 'UsersController@home');
+// Route::get('/', 'UsersController@home');
 Route::resource('/users', 'UsersController');
 Route::post('/add_user', 'UsersController@store');
 Route::post('/update_user', 'UsersController@update');
@@ -48,12 +48,33 @@ Route::post('/deactivate_user', 'UsersController@deactivation');
 
 // FRIGHT ROUTES
 
-Route::get('/', 'FrightController@home');
+// Route::get('/', 'FrightController@home');
 Route::resource('/frights', 'FrightController');
 Route::post('/add_fright', 'FrightController@store');
 Route::post('/update_fright', 'FrightController@update');
 Route::post('/delete_fright', 'FrightController@destroy');
 
+// VENDOR ROUTES
+
+// Route::get('/', 'FrightController@home');
+Route::resource('/vendors', 'VendorController');
+Route::post('/add_vendor', 'VendorController@store');
+Route::post('/update_vendor', 'VendorController@update');
+Route::post('/delete_vendor', 'VendorController@destroy');
+
+// LR ENTRY ROUTES
+
+// Route::get('/', 'FrightController@home');
+Route::resource('/lr_entries', 'LrentryController');
+Route::post('/add_lr_entry', 'LrentryController@store');
+Route::post('/get_last_lr_number', 'LrentryController@getLastLr');
+// Route::post('/update_vendor', 'LrentryController@update');
+// Route::post('/delete_vendor', 'LrentryController@destroy');
+
+Route::post('/create_receipt', 'LrentryController@createReceipt');
+
+
 Route::get('/{vue_capture?}', function () {
     return view('vueApp');
 })->where('vue_capture', '[\/\w\.-]*');
+ 

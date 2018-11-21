@@ -19,7 +19,7 @@ class CreateFrightTable extends Migration
             $table->string('quantity');
             $table->string('source');
             $table->string('destination');
-            $table->string('fright');
+            $table->string('rate');
             $table->string('distance');
             $table->timestamps();
         });

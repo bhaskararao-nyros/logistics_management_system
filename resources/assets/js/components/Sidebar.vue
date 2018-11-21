@@ -1,19 +1,19 @@
 <template>
 	<div class="sidebar">
     <ul class="sidebar_ul">
-      <li id="app_name">LMS 1.0</li>
-      <li>LR Entry <font-awesome-icon icon="caret-right" class="fa_icon" /></li>
+      <router-link to="/"><li id="app_name">LMS v1.0</li></router-link>
+      <router-link to="/lr_entry"><li :class="{ main_li_active : pathname === '/lr_entry' }">LR Entry <font-awesome-icon icon="caret-right" class="fa_icon" /></li></router-link>
       <li>Bills <font-awesome-icon icon="caret-right" class="fa_icon" /></li>
       <li>Bank Statements <font-awesome-icon icon="caret-right" class="fa_icon" /></li>
-      <li id="data_management_li" @click="data_management = !data_management">Data Management <font-awesome-icon icon="caret-right" class="fa_icon" v-if="!data_management" />
+      <li id="data_management_li" @click="sidebarToggle">Data Management <font-awesome-icon icon="caret-right" class="fa_icon" v-if="!data_management" />
       <font-awesome-icon icon="caret-down" class="fa_icon" v-if="data_management" />
       </li>
-      <ul class="nested_ul" v-if="data_management">
-        <li><router-link to="/products">Products <font-awesome-icon icon="caret-right" class="fa_icon" /></router-link></li>
-        <li><router-link to="/companies">Firm/Company <font-awesome-icon icon="caret-right" class="fa_icon" /></router-link></li>
-        <li>Tankers <font-awesome-icon icon="caret-right" class="fa_icon" /></li>
-        <li>Fright <font-awesome-icon icon="caret-right" class="fa_icon" /></li>
-        <li>Users <font-awesome-icon icon="caret-right" class="fa_icon" /></li>
+      <ul id="nested_ul_id" class="nested_ul" v-if="data_management">
+        <router-link :to="'/' + list.link" v-for="list in nested_li_items" :key="list.name">
+          <li :class="{ nested_li_active : list.name === active_nested_li }">{{ list.label }} 
+            <font-awesome-icon icon="caret-right" class="fa_icon" />
+          </li>
+        </router-link>
       </ul>
     </ul>
 	</div>
@@ -25,38 +25,36 @@ export default {
   name: 'Sidebar',
   data () {
     return {
-    	data_management: false
+      active_nested_li : 'none',
+    	nested_li_items : [ 
+        { name: 'products', label: 'Products', link: 'product' },
+        { name: 'tankers', label: 'Tankers', link: 'tanker' },
+        { name: 'fright', label: 'Fright', link: 'fright' },
+        { name: 'users', label: 'Users', link: 'user' },
+        { name: 'company', label: 'Company', link: 'company' },
+        { name: 'vendors', label: 'Vendors', link: 'vendor' },
+      ],
+      pathname : window.location.pathname
+    }
+  },
+  mounted () {
+    let pathname = window.location.pathname
+    for (var i = 0; i < this.nested_li_items.length; i++) {
+      if ('/'+this.nested_li_items[i].link === pathname) {
+        this.$store.dispatch('MODIFY_SIDEBAR', true)
+        this.active_nested_li = this.nested_li_items[i].name
+      }
     }
   },
   methods: {
-  	// addCat () {
-  	// 	this.cat_id += 1
-  	// 	let obj = { id: this.cat_id, name: this.cat_input }
-  	// 	this.$store.dispatch('SAVE_CAT', obj)
-  	// 	this.cat_input = ''
-  	// },
-  	// removeCat (cat_id) {
-  	// 	this.$store.dispatch('DEL_CAT',cat_id)
-  	// },
-
-
-  	// addSubCat (cat_id) {
-  	// 	this.sub_cat_id += 1
-  	// 	let obj = { id: this.cat_id, c_id: cat_id, name: this.sub_cat_input }
-  	// 	this.$store.dispatch('SAVE_SUB_CAT', obj)
-  	// 	this.sub_cat_input = ''
-  	// },
-  	// removeCat (cat_id) {
-  	// 	this.$store.dispatch('DEL_SUB_CAT',cat_id)
-  	// }
+    sidebarToggle () {
+      this.$store.dispatch('MODIFY_SIDEBAR')
+    }
   },
   computed: {
- //  	catList(){
-	//     return this.$store.getters.CATEGORIES
-	// },
-	// subCatList(){
-	//     return this.$store.getters.SUB_CATEGORIES
-	// }
+  	data_management () {
+	    return this.$store.getters.SIDEBAR
+	  },
   }
 }
 </script>
@@ -77,6 +75,10 @@ export default {
   margin-left: -40px;
   color: #fff;
   cursor: pointer;
+}
+.sidebar_ul a {
+  outline: none !important;
+  text-decoration: none;
 }
 .nested_ul li {
   margin-left: -80px;
@@ -100,5 +102,44 @@ export default {
 .fa_icon {
   float: right;
   font-size: 23px;
+}
+#nested_ul_id a {
+  color: #fff !important;
+  text-decoration: none;
+  outline: none !important;
+}
+#app_name a {
+  color: #fff;
+  text-decoration: none;
+}
+.fa_delete_icon {
+  color: #dc3545;
+  font-size: 21px;
+  height: 26px;
+  cursor: pointer;
+}
+.fa_edit_icon {
+  color: #17a2b8;
+  font-size: 25px;
+  cursor: pointer;
+}
+.form_input {
+  width: 100%;
+}
+.form_row_margin {
+  margin-top: 3px;
+  margin-left: 1%;
+}
+.content_column {
+  max-width: 80%;
+  flex: 0 0 80%;
+}
+.sidebar_column {
+  max-width: 20%;
+  flex: 0 0 20%;
+}
+.nested_li_active, .main_li_active {
+  background-color: #518c95 !important;
+  font-weight: bold;
 }
 </style>

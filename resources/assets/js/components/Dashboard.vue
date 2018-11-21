@@ -3,11 +3,11 @@
     <!-- NOTIFICATIONS COMPONENT -->
     <notifications group="product_notifications" />
     <b-row class="dashboard_row">
-      <b-col cols="3">
+      <b-col cols="3" class="sidebar_column">
         <!-- SIDEBAR COMPONENT -->
         <Sidebar />
       </b-col>
-      <b-col cols="9">
+      <b-col cols="9" class="content_column">
         <!-- NAVBAR COMPONENT -->
         <Navbar />
         <!-- BREADCRUBM FOR EASY NAVIGATION -->
@@ -137,7 +137,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .col-9, .col-3 {
   padding: 0px !important;
 }
@@ -162,5 +162,12 @@ export default {
 .modal_btns {
   float: right;
   margin-left: 1%;
+}
+.sidebar_column {
+  max-width: 20% !important;
+}
+.content_column {
+  flex: 0 0 80% !important;
+  max-width: 80%;
 }
 </style>
